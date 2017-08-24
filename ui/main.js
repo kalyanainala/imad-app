@@ -26,7 +26,8 @@ button.onclick = function () {
 
 // Submit name
 var submit = document.getElementById('submit_btn');
-submit.onclick = function () {
+submit.onclick = function ()
+{
   
     // Create a request object
     var request = new XMLHttpRequest();
@@ -48,6 +49,7 @@ submit.onclick = function () {
           }
       }  
       // Not done yet
+    }
     };
     
     // Make the request
