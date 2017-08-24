@@ -1,12 +1,11 @@
-
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
 var Pool = require('pg').Pool;
 
 var config = {
-    user: 'kalyanainala5536',
-    database: 'kalyanainala5536',
+    user: 'coco98',
+    database: 'coco98',
     host: 'db.imad.hasura-app.io',
     port: '5432',
     password: process.env.DB_PASSWORD
@@ -77,7 +76,7 @@ function createTemplate (data) {
                   ${heading}
               </h3>
               <div>
-                  ${date.toDateString()}
+                  ${date}
               </div>
               <div>
                 ${content}
@@ -101,7 +100,7 @@ app.get('/test-db', function (req, res) {
       if (err) {
           res.status(500).send(err.toString());
       } else {
-          res.send(JSON.stringify(result.rows));
+          res.send(JSON.stringify(result));
       }
    });
 });
@@ -122,23 +121,11 @@ app.get('/submit-name', function(req, res) { // /submit-name?name=xxxx
   res.send(JSON.stringify(names));
 });
 
-app.get('/articles/:articleName', function (req, res) {
+app.get('/:articleName', function (req, res) {
   // articleName == article-one
   // articles[articleName] == {} content object for article one
-  
-  // SELECT * FROM article WHERE title = ''; DELETE WHERE a = 'asdf'
-  pool.query("SELECT * FROM article WHERE title = '" + req.params.articleName + "'", function (err, result) {
-    if (err) {
-        res.status(500).send(err.toString());
-    } else {
-        if (result.rows.length === 0) {
-            res.status(404).send('Article not found');
-        } else {
-            var articleData = result.rows[0];
-            res.send(createTemplate(articleData));
-        }
-    }
-  });
+  var articleName = req.params.articleName;
+  res.send(createTemplate(articles[articleName]));
 });
 
 app.get('/ui/style.css', function (req, res) {
@@ -157,4 +144,3 @@ var port = 8080; // Use 8080 for local development because you might already hav
 app.listen(8080, function () {
   console.log(`IMAD course app listening on port ${port}!`);
 });
-
